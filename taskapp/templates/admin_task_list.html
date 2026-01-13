@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Users Tasks</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background: #f4f6f8;
+        }
+
+        header {
+            background: #2c3e50;
+            color: white;
+            padding: 15px 25px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        header a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .container {
+            padding: 25px;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            color: #2c3e50;
+        }
+
+        table {
+            width: 100%;
+            background: white;
+            border-collapse: collapse;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            font-size: 14px;
+            text-align: left;
+        }
+
+        th {
+            background: #ecf0f1;
+        }
+
+        tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+
+        .status {
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            color: white;
+        }
+
+        .pending { background: #f39c12; }
+        .progress { background: #3498db; }
+        .completed { background: #2ecc71; }
+
+        .btn {
+            padding: 6px 10px;
+            font-size: 13px;
+            color: white;
+            border-radius: 4px;
+            text-decoration: none;
+        }
+
+        .view { background: #2980b9; }
+        .delete { background: #e74c3c; }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h3>Admin Panel</h3>
+    <a href="">Dashboard</a>
+</header>
+
+<div class="container">
+
+    <h2>Tasks Assigned to My Users</h2>
+
+    <table>
+        <tr>
+            <th>#</th>
+            <th>Task</th>
+            <th>User</th>
+            <th>Due Date</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+
+        {% for task in tasks %}
+        <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ task.title }}</td>
+            <td>{{ task.assigned_to.username }}</td>
+            <td>{{ task.due_date }}</td>
+            <td>
+                {% if task.status == 'Pending' %}
+                    <span class="status pending">Pending</span>
+                {% elif task.status == 'In Progress' %}
+                    <span class="status progress">In Progress</span>
+                {% else %}
+                    <span class="status completed">Completed</span>
+                {% endif %}
+            </td>
+            <td>
+                {% if task.status == 'Completed' %}
+                    <a class="btn view" href="">
+                        Report
+                    </a>
+                {% endif %}
+
+                <a class="btn delete"
+                   href=""
+                   onclick="return confirm('Delete this task?');">
+                   Delete
+                </a>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="6" style="text-align:center;">No tasks found</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+</div>
+
+</body>
+</html>
