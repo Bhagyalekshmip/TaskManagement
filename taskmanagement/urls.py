@@ -3,12 +3,20 @@ from django.urls import path,include
 from authapp import views
 
 urlpatterns = [
-    path('',views.login,name="login"),
+    path('',views.login_view,name="loggingin"),
     path('dashboard/', views.dashboard, name ='superadmin_dashboard'),
-    path('list_admin/', views.list_admin, name ='list_admin'),
-    path('list_user/', views.list_user, name ='list_user'),
-    path('create/', views.create, name ='create'),
-    path('edit/', views.edit, name ='edit'),
-    path('usertoadmin/', views.asign_usertoadmin, name ='asign_usertoadmin'),
+    
+    path('admins/', views.admin_list, name='admin_list'),
+    path('admins/add/', views.admin_add_edit, name='admin_add'),
+    path('admins/edit/<int:id>/', views.admin_add_edit, name='admin_edit'),
+    path('admins/toggle-status/<int:id>/', views.toggle_admin_status, name='toggle_admin_status'),
+
+
+    path('users/', views.user_list, name='user_list'),
+    path('users/add/', views.user_add_edit, name='user_add'),
+    path('users/edit/<int:id>/', views.user_add_edit, name='user_edit'),
+    path('users/delete/<int:id>/', views.user_delete, name='user_delete'),
+    
+    path('superadmin/assign-user/', views.assign_user_to_admin, name ='assign_user_to_admin'),
     path('task/',include('taskapp.urls'))
 ]
