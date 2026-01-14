@@ -4,7 +4,8 @@ from authapp import views
 
 urlpatterns = [
     path('',views.login_view,name="loggingin"),
-    path('dashboard/', views.dashboard, name ='superadmin_dashboard'),
+    path('superadmin_dashboard/', views.superadmin_dashboard, name ='superadmin_dashboard'),
+    path('admin_dashboard/', views.admin_dashboard, name ='admin_dashboard'),
     
     path('admins/', views.admin_list, name='admin_list'),
     path('admins/add/', views.admin_add_edit, name='admin_add'),
@@ -18,5 +19,7 @@ urlpatterns = [
     path('users/delete/<int:id>/', views.user_delete, name='user_delete'),
     
     path('superadmin/assign-user/', views.assign_user_to_admin, name ='assign_user_to_admin'),
-    path('task/',include('taskapp.urls'))
+    
+    path('task/',include('taskapp.urls')),
+    path('api/',include('apiapp.urls'))
 ]

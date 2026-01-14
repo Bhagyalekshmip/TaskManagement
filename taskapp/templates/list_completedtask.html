@@ -106,31 +106,22 @@
             </tr>
         </thead>
         <tbody>
-            {% for task in completed_tasks %}
-                <tr>
-                    <td>{{ forloop.counter }}</td>
-                    <td>{{ task.title }}</td>
-                    <td>{{ task.assigned_to.username }}</td>
-                    <td>
-                        {% if task.assigned_to.assigned_admin %}
-                            {{ task.assigned_to.assigned_admin.username }}
-                        {% else %}
-                            -
-                        {% endif %}
-                    </td>
-                    <td>
-                        <a href="{% url 'task_report_detail' task.id %}" class="view-btn">
-                            View Report
-                        </a>
-                    </td>
-                </tr>
-            {% empty %}
-                <tr>
-                    <td colspan="6" class="no-data">
-                        No completed task reports available.
-                    </td>
-                </tr>
-            {% endfor %}
+           {% for task in completed_tasks %}
+<tr>
+    <td>{{ forloop.counter }}</td>
+    <td>{{ task.title }}</td>
+    <td>{{ task.assigned_to.username }}</td>
+    <td>{{ task.assigned_to.assigned_admin.username }}</td>
+    <td>
+        <a href="{% url 'task_reports' task.id %}" class="view-btn">View Report</a>
+    </td>
+</tr>
+{% empty %}
+<tr>
+    <td colspan="5">No completed tasks found.</td>
+</tr>
+{% endfor %}
+
         </tbody>
     </table>
 

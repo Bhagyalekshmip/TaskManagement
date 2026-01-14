@@ -97,7 +97,7 @@
 
 <header>
     <h3>Task Management System</h3>
-    <a href="{% url 'list_task_reports' %}">Back to Reports</a>
+    
 </header>
 
 <div class="container">
@@ -123,7 +123,7 @@
 
     <div class="row">
         <strong>Status:</strong>
-        <span class="status">Completed</span>
+        <span class="status">{{task.status}}</span>
     </div>
 
     <div class="row">
@@ -137,7 +137,7 @@
         </div>
     </div>
 
-    <a href="{% url 'list_task_reports' %}" class="back-btn">⬅ Back</a>
+
 
 </div>
 

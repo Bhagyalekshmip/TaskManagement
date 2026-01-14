@@ -7,10 +7,6 @@ class User(AbstractUser):
         ('admin', 'Admin'),
         ('user', 'User'),
     )
-    STATUS_CHOICES = (
-       ('enable', 'Enable'),
-       ('disable', 'Disable'),
-    )
     
     role = models.CharField(max_length=25,choices = ROLE_CHOICES,default='superadmin')
     assigned_admin = models.ForeignKey('self',
@@ -20,10 +16,6 @@ class User(AbstractUser):
         limit_choices_to={'role': 'admin'},
         related_name='assigned_users')
     
-    status = models.CharField(
-        max_length=20,
-        choices=STATUS_CHOICES,
-        default='enable'
-    )
+   
     def __str__(self):
         return self.username

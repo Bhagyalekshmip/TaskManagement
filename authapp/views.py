@@ -2,6 +2,9 @@ from django.shortcuts import render,redirect,get_object_or_404
 from django.contrib.auth import authenticate, login
 from authapp.models import User
 from .forms import AdminForm, UserForm
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseForbidden
+
 
 # ----------------------------------VIEW FOR LOGIN OF ADMIN/SUPERADMIN/USER---------------------------
 def login_view(request):
@@ -20,7 +23,7 @@ def login_view(request):
             if user.role == 'superadmin':
                 return redirect('superadmin_dashboard')
             elif user.role == 'admin':
-                return redirect('user_list')
+                return redirect('admin_dashboard')
             elif user.role == 'user':
                  error = "No UserInterface"
         else:
@@ -28,18 +31,31 @@ def login_view(request):
 
     return render(request, 'login.html', {'error': error})
 
-# -------------------------------------------------Dashboard---------------------------------------------
+# -------------------------------------------------superadmin Dashboard---------------------------------------------
+@login_required
+def superadmin_dashboard(request):
+    user = request.user
 
-def dashboard(request):
-    return render(request,'superuser_dashboard.html')
+    if user.role != 'superadmin':  # Check role
+        return HttpResponseForbidden("You are not authorized to view this page")
+    return render(request,'superadmin_dashboard.html')
 
+# -------------------------------------------------admin Dashboard---------------------------------------------
+@login_required
+def admin_dashboard(request):
+    user = request.user
 
+    if user.role != 'admin':  # Check role
+        return HttpResponseForbidden("You are not authorized to view this page")
+    return render(request,'admin_dashboard.html')
 # -------------------------------------------------admin listing-------------------------------------------------------
+@login_required
 def admin_list(request):
     admins = User.objects.filter(role='admin')
     return render(request,'admin_list.html',{'admins': admins})
 
 # ---------------------------------------------------adding and editing admins-----------------------------------------------------
+@login_required
 def admin_add_edit(request, id=None):
     admin_obj = None
     if id:
@@ -66,30 +82,32 @@ def admin_add_edit(request, id=None):
     return render(request, 'admin_form.html', {'form': form, 'is_edit': id})
 
 # ------------------------------------disabling admins------------------------------------------------
+@login_required
 def toggle_admin_status(request, id):
     admin = get_object_or_404(User, id=id, role='admin')
-
-    if admin.status == 'enable':
-        admin.status = 'disable'
-    else:
-        admin.status = 'enable'
-
+    
+    # Toggle is_active status
+    admin.is_active = not admin.is_active
+    
     admin.save()
     return redirect('admin_list')
 
 # ---------------------------------user listing-----------------------------
+@login_required
 def user_list(request):
     users = User.objects.filter(role='user')
     return render(request,'user_list.html',{'users':users})
 
 # --------------------------------------------add / edit users-----------------
+@login_required
 def user_add_edit(request, id=None):
     user_obj = None
     if id:
         user_obj = get_object_or_404(User, id=id, role='user')
 
     form = UserForm(request.POST or None, instance=user_obj)
-    form.fields['assigned_admin'].queryset = User.objects.filter(role='admin', status='enable')
+    form.fields['assigned_admin'].queryset = User.objects.filter(role='admin', is_active=True)
+
 
 
     if request.method == 'POST' and form.is_valid():
@@ -106,12 +124,15 @@ def user_add_edit(request, id=None):
     return render(request, 'user_form.html', {'form': form, 'is_edit': id})
 
 # ----------------------------deleting the user-------------------------------
+@login_required
 def user_delete(request, id):
+
     user = get_object_or_404(User, id=id, role='user')
     user.delete()
     return redirect('user_list')
 
 # -----------------------------------asigning users to admin-------------------------
+@login_required
 def assign_user_to_admin(request):
     admins = User.objects.filter(role='admin')
     users = User.objects.filter(role='user')

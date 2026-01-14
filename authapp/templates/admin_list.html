@@ -149,19 +149,20 @@
                     <a href="{% url 'admin_edit' admin.id %}" class="action-btn edit-btn">
                         Edit
                     </a>
-                     {% if admin.status == 'enable' %}
-        <a href="{% url 'toggle_admin_status' admin.id %}"
-           class="action-btn disable-btn"
-           onclick="return confirm('Disable this admin?');">
-           Disable
-        </a>
-    {% else %}
-        <a href="{% url 'toggle_admin_status' admin.id %}"
-           class="action-btn enable-btn"
-           onclick="return confirm('Enable this admin?');">
-           Enable
-        </a>
-    {% endif %}
+                   {% if admin.is_active %}
+    <a href="{% url 'toggle_admin_status' admin.id %}"
+       class="action-btn disable-btn"
+       onclick="return confirm('Disable this admin?');">
+       Disable
+    </a>
+{% else %}
+    <a href="{% url 'toggle_admin_status' admin.id %}"
+       class="action-btn enable-btn"
+       onclick="return confirm('Enable this admin?');">
+       Enable
+    </a>
+{% endif %}
+
                </td>
                 
             </tr>

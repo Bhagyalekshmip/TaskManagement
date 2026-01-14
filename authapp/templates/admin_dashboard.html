@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>SuperAdmin Dashboard</title>
+    <title>Admin Dashboard</title>
 
     <style>
         body {
@@ -121,7 +121,7 @@
 <body>
 
 <header>
-    <h2>Task Management System – SuperAdmin</h2>
+    <h2>Task Management System – Admin</h2>
     <a href="">Logout</a>
 </header>
 
@@ -129,13 +129,9 @@
 
     <!-- Summary Section -->
     <div class="cards">
-        <div class="card">
-            <h3>Admins</h3>
-            <div class="count">{{ admin_count }}</div>
-        </div>
 
         <div class="card">
-            <h3>Users</h3>
+            <h3>Assigned Users</h3>
             <div class="count">{{ user_count }}</div>
         </div>
 
@@ -152,9 +148,8 @@
 
     <!-- Action Buttons -->
     <div class="actions">
-        <a href="{% url 'admin_list' %}" class="action-card">Manage Admins</a>
-        <a href="{% url 'user_list' %}" class="action-card">Manage Users</a>
-        <a href="{% url 'assign_user_to_admin'%}" class="action-card">Assign Users to Admin</a>
+        <a href="{% url 'assigned_users_list' %}" class="action-card">Manage Users</a>
+        <a href="{% url 'assigned_users_list'%}" class="action-card">Assign task to user</a>
         <a href="" class="action-card">View All Tasks</a>
         <a href="" class="action-card">View Task Reports</a>
     </div>
